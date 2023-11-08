@@ -11,7 +11,7 @@
 
 ### ⚙️ Technical Concept 
 - 🧑🏻‍💻 Implemented in `C programming`  
-- 📦 Algorithm:
+- 🤖 Algorithms:
   - Permutations (Bruteforce/Heap) to generate every possible code combination.
   - Genetic Algorithms to enhance decision-making abilities based on all previous feedback.
 --- 
