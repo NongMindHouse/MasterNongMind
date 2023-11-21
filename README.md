@@ -22,7 +22,7 @@
 | ----------- | -------------------------- | --------------------------------------------          |
 | 65070501001 | Kantapong Vongpanich       | [OnlyJust3rd](https://github.com/OnlyJust3rd)         |
 | 65070501017 | Chotanansub Sophaken       | [ChotanansubSoph](https://github.com/ChotanansubSoph) |
-| 65070501044 | Phuris Pimpat              |                                                       |
+| 65070501044 | Phuris Pimpat              | [MiikyMan](https://github.com/MiikyMan)               |
 | 65070501073 | Chaiyapat Meeying          | [ChaiyapatOam](https://github.com/ChaiyapatOam)       |
-| 65070501082 | Pattaranun Ayaprasitphol   |                                                       |
+| 65070501082 | Pattaranun Ayaprasitphol   | [efmuruk](https://github.com/efmuruk)                 |
 | 65070501088 | Sopida Kaewjongkool        |                                                       |
