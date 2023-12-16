@@ -2,11 +2,16 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define CODE_LENGTH 5
-#define COLORS 8
-#define MAX_GUESS 50
-#define POPULATION_LENGTH 150
-#define MAX_GEN 100
+// #define CODE_LENGTH 5
+// #define COLORS 8
+#define CODE_LENGTH 4
+#define COLORS 6
+#define MAX_GUESS 10
+#define POPULATION_LENGTH 300
+#define MAX_GEN 200
+
+#define BLACK_WEIGHT 3
+#define WHITE_WEIGHT 2
 
 void PrintCode(int arr[])
 {
@@ -117,19 +122,19 @@ void GenerateRandomPopulation(int population[POPULATION_LENGTH][CODE_LENGTH])
   }
 }
 
-void FitnessScore(int test[CODE_LENGTH + 1], int guesses[MAX_GUESS][CODE_LENGTH + 2], int round)
+void FitnessScore(int individual[CODE_LENGTH + 1], int guesses[MAX_GUESS][CODE_LENGTH + 2], int round)
 {
   int fitness = 0;
   for (int i = 0; i < round; i++)
   {
     int black, white;
-    EvaluateGuess(test, guesses[i], &black, &white);
+    EvaluateGuess(individual, guesses[i], &black, &white);
 
-    fitness += abs(black - guesses[i][CODE_LENGTH]);
-    fitness += abs(white - guesses[i][CODE_LENGTH + 1]);
+    fitness += abs(black - guesses[i][CODE_LENGTH]) * BLACK_WEIGHT;
+    fitness += abs(white - guesses[i][CODE_LENGTH + 1]) * WHITE_WEIGHT;
   }
 
-  test[CODE_LENGTH] = fitness;
+  individual[CODE_LENGTH] = fitness;
 }
 
 void SinglePointCrossover(int dad[], int mom[], int child_1[], int child_2[])
