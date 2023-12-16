@@ -1,7 +1,6 @@
 import subprocess
 from tqdm import tqdm
 import pandas as pd
-import time
 
 def run_c_file(file_path):
     try:
