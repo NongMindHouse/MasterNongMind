@@ -1,6 +1,7 @@
 import subprocess
 from tqdm import tqdm
 import pandas as pd
+import time
 
 def run_c_file(file_path):
     try:
@@ -29,6 +30,11 @@ if __name__ == '__main__':
   c_file_path = "mm-genetic.c"
 
   note = input('note: ')
+  if input('4 or 5: ') == '5':
+    c_file_path = "mm-genetic-5.c"
+  
+  print('Using ', c_file_path)
+
   test_size = 1000
   res = []
   not_win = 0
@@ -46,17 +52,20 @@ if __name__ == '__main__':
     #     print(f"Last Output: {last_output}")
     # else:
     #     print("Failed to run the C file.")
-  
+
   print(note)
 
   # Create a pandas Series from the fitness list
   res = pd.Series(res)
 
+  not_win += res[res > 10].size
+
   # Display the results
-  print(f"Mean: {res.mean()}")
-  print(f"Median: {res.median()}")
-  print(f"Mode: {res.mode().iloc[0]}")  # Mode may have multiple values, so we take the first one
-  print(f"SD: {round(res.std(),4)}")
-  print(f"Max: {res.max()}")
-  print(f"Min: {res.min()}")
-  print('not win:',not_win)
+  print(f"T.Size\t{test_size}")
+  print(f"Mean\t{round(res.mean(),4)}")
+  print(f"Median\t{res.median()}")
+  print(f"Mode\t{res.mode().iloc[0]}")  # Mode may have multiple values, so we take the first one
+  print(f"SD\t{round(res.std(),4)}")
+  print(f"Max\t{res.max()}")
+  print(f"Min\t{res.min()}")
+  print(f"W.RATE \t{round(test_size - not_win)*100/test_size}% ({not_win} LOSES)")
