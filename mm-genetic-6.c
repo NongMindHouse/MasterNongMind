@@ -160,7 +160,8 @@ int GeneticEvolution(int eligibles[][CODE_LENGTH + 1], int guesses[MAX_GUESS][CO
       }
       else
       {
-        Crossover(population[i], population[i + 1], children[i]);
+        // Crossover(population[i], population[i + 1], children[i]);
+        Crossover(population[i], population[rand() % poplen], children[i]);
         if (rand() % 100 < 10)
         {
           Mutate(children[i]);
