@@ -14,7 +14,7 @@ float MUTATION_RATE = 0.1;
 #define BLACK_WEIGHT 3
 #define WHITE_WEIGHT 2
 
-#define FANCY_MODE 1
+int FANCY_MODE = 1;
 
 // Just for printing array
 void PrintCode(int arr[])
@@ -247,7 +247,7 @@ int GeneticEvolution(int eligibles[][CODE_LENGTH + 1], int guesses[MAX_GUESS][CO
         SinglePointCrossover(population[i], population[rand() % (poplen)], children[i], children[i + 1]);
 
       // Randomly mutate individual
-      if (rand() % 100 < 10)
+      if (rand() % 100 < MUTATION_RATE * 100)
       {
         if (rand() % 2 == 0)
           Mutate(children[i]);
@@ -365,7 +365,7 @@ void PrintGuessData(int guess[CODE_LENGTH + 2])
 int main(int argc, char *argv[])
 {
   // This part use to automate benchmarking
-  if (argc == 7)
+  if (argc == 8)
   {
     CODE_LENGTH = atoi(argv[1]);
     COLORS = atoi(argv[2]);
@@ -375,6 +375,8 @@ int main(int argc, char *argv[])
     MAX_GEN = atoi(argv[5]);
 
     MUTATION_RATE = atof(argv[6]);
+
+    FANCY_MODE = atof(argv[7]);
 
     printf("-- Manual Overwrite Detected --\n");
   }
