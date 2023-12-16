@@ -46,7 +46,7 @@ if __name__ == '__main__':
      '10', # MAX_GUESS
      '300', # POPULATION_LENGTH
      '200', # MAX_GEN
-     '0.1', # MUTATION_RATE
+     '0.15', # MUTATION_RATE
   ]
 
   #   Compile the C file
@@ -89,7 +89,7 @@ if __name__ == '__main__':
   timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
   filename = f"{param[0]}{param[1]}-MGU{param[2]}-POP{param[3]}-MGEN{param[4]}-MUT{round(float(param[5])*100)}.txt"
-  file_path = os.path.join("Archives", filename)
+  file_path = os.path.join("Benchmarks", filename)
 
   with open(file_path,'w') as f:
     f.write(timestamp)
