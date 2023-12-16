@@ -83,14 +83,14 @@ if __name__ == '__main__':
   file_path = os.path.join("Archives", f"{timestamp}.txt")
 
   with open(file_path,'w') as f:
-    f.write(f"Note\t{note}")
-    f.write(f"T.Size\t{test_size}")
-    f.write(f"Mean\t{round(res.mean(),4)}")
-    f.write(f"Median\t{res.median()}")
-    f.write(f"Mode\t{res.mode().iloc[0]}")
-    f.write(f"SD\t{round(res.std(),4)}")
-    f.write(f"Max\t{res.max()}")
-    f.write(f"Min\t{res.min()}")
-    f.write(f"W.RATE \t{round(test_size - not_win)*100/test_size}% ({not_win} LOSES)")
+    f.write(f"Note\t{note}\n")
+    f.write(f"T.Size\t{test_size}\n")
+    f.write(f"Mean\t{round(res.mean(),4)}\n")
+    f.write(f"Median\t{res.median()}\n")
+    f.write(f"Mode\t{res.mode().iloc[0]}\n")
+    f.write(f"SD\t{round(res.std(),4)}\n")
+    f.write(f"Max\t{res.max()}\n")
+    f.write(f"Min\t{res.min()}\n")
+    f.write(f"W.RATE \t{round(test_size - not_win)*100/test_size}% ({not_win} LOSES)\n")
     for r in res:
       f.write(str(r) + ',')
