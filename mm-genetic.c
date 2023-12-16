@@ -104,7 +104,7 @@ void FitnessScore(int test[CODE_LENGTH + 1], int guesses[MAX_GUESS][CODE_LENGTH 
   test[CODE_LENGTH] = fitness;
 }
 
-void Crossover(int dad[], int mom[], int child[])
+void Crossover(int dad[], int mom[], int child_1[], int child_2[])
 {
   int crossoverPoint = rand() % CODE_LENGTH;
   // int crossoverPoint = CODE_LENGTH / 2;
@@ -112,11 +112,13 @@ void Crossover(int dad[], int mom[], int child[])
 
   for (int i = 0; i < crossoverPoint; i++)
   {
-    child[i] = dad[i];
+    child_1[i] = dad[i];
+    child_2[i] = mom[i];
   }
   for (int i = crossoverPoint; i < CODE_LENGTH; i++)
   {
-    child[i] = mom[i];
+    child_1[i] = mom[i];
+    child_2[i] = dad[i];
   }
 }
 
@@ -134,7 +136,7 @@ int compare(const void *a, const void *b)
   const int *pb = (const int *)b;
 
   // Compare the last elements
-  return pa[4] - pb[4];
+  return pa[CODE_LENGTH] - pb[CODE_LENGTH];
 }
 
 int GeneticEvolution(int eligibles[][CODE_LENGTH + 1], int guesses[MAX_GUESS][CODE_LENGTH + 2], int round, int poplen)
@@ -161,19 +163,30 @@ int GeneticEvolution(int eligibles[][CODE_LENGTH + 1], int guesses[MAX_GUESS][CO
       else
       {
         // Crossover(population[i], population[i + 1], children[i]);
-        Crossover(population[i], population[rand() % poplen], children[i]);
+        Crossover(population[i], population[rand() % poplen], children[i], children[i + 1]);
+
         if (rand() % 100 < 10)
         {
-          Mutate(children[i]);
+          if (rand() % 2 == 0)
+            Mutate(children[i]);
+          else
+            Mutate(children[i + 1]);
         }
       }
 
-      FitnessScore(children[i], guesses, round);
-      if (children[i][CODE_LENGTH] == 0)
-        nzero++;
+      // FitnessScore(children[i], guesses, round);
+      // if (children[i][CODE_LENGTH] == 0)
+      //   nzero++;
 
       // printf("f:%d | ", children[i][CODE_LENGTH]);
       // PrintCode(children[i]);
+    }
+
+    for (int i = 0; i < poplen; i++)
+    {
+      FitnessScore(children[i], guesses, round);
+      if (children[i][CODE_LENGTH] == 0)
+        nzero++;
     }
 
     // printf("sorted:\n");
@@ -191,7 +204,9 @@ int GeneticEvolution(int eligibles[][CODE_LENGTH + 1], int guesses[MAX_GUESS][CO
     //   printf("f:%d | ", children[i][CODE_LENGTH]);
     //   PrintCode(children[i]);
     // }
+
     qsort(children, poplen, sizeof(children[0]), compare);
+
     // printf("====== SORTED ======\n");
     // for (int i = 0; i < poplen; i++)
     // {
@@ -280,7 +295,7 @@ int main()
   PrintCode(guesses[0]);
 
   int round = 1;
-  while (black != 4 && round < MAX_GUESS)
+  while (black != CODE_LENGTH && round < MAX_GUESS)
   {
     int eligibles[POPULATION_LENGTH * 2][CODE_LENGTH + 1];
 
@@ -317,7 +332,7 @@ int main()
     printf("b:%d w:%d | ", guesses[round][CODE_LENGTH], guesses[round][CODE_LENGTH + 1]);
     PrintCode(eligibles[k]);
 
-    if (guesses[round][CODE_LENGTH] == 4)
+    if (guesses[round][CODE_LENGTH] == CODE_LENGTH)
     {
       PrintCode(guesses[round]);
       printf("we won in %d round\n", round + 1);
