@@ -40,13 +40,28 @@ if __name__ == '__main__':
   res = []
   not_win = 0
 
+  # BEST COMBINATION (FOR NOW)
+  #    '4', # CODE_LENGTH
+  #    '6', # COLORS
+  #    '10', # MAX_GUESS
+  #    '150', # POPULATION_LENGTH
+  #    '100', # MAX_GEN
+  #    '0.10', # MUTATION_RATE
+
+  #    '5', # CODE_LENGTH
+  #    '8', # COLORS
+  #    '10', # MAX_GUESS
+  #    '300', # POPULATION_LENGTH
+  #    '200', # MAX_GEN
+  #    '0.15', # MUTATION_RATE
+
   param = [
-     '5', # CODE_LENGTH
-     '8', # COLORS
+     '4', # CODE_LENGTH
+     '6', # COLORS
      '10', # MAX_GUESS
-     '300', # POPULATION_LENGTH
-     '200', # MAX_GEN
-     '0.15', # MUTATION_RATE
+     '150', # POPULATION_LENGTH
+     '100', # MAX_GEN
+     '0.10', # MUTATION_RATE
   ]
 
   #   Compile the C file
