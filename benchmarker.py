@@ -3,6 +3,7 @@ from tqdm import tqdm
 import pandas as pd
 import os
 from datetime import datetime
+import time
 
 def run_c_file(file_path, parameters=[]):
     try:
@@ -46,7 +47,7 @@ if __name__ == '__main__':
   #    '10', # MAX_GUESS
   #    '150', # POPULATION_LENGTH
   #    '100', # MAX_GEN
-  #    '0.10', # MUTATION_RATE
+  #    '0.05', # MUTATION_RATE
 
   #    '5', # CODE_LENGTH
   #    '8', # COLORS
@@ -59,9 +60,9 @@ if __name__ == '__main__':
      '4', # CODE_LENGTH
      '6', # COLORS
      '10', # MAX_GUESS
-     '150', # POPULATION_LENGTH
-     '100', # MAX_GEN
-     '0.10', # MUTATION_RATE
+     '300', # POPULATION_LENGTH
+     '200', # MAX_GEN
+     '0.05', # MUTATION_RATE
   ]
 
   #   Compile the C file
@@ -69,6 +70,7 @@ if __name__ == '__main__':
   if compile_process.returncode != 0:
       raise Exception(f"Compilation failed with return code {compile_process.returncode}")
 
+  startTime = time.time()
   for _ in tqdm(range(test_size)):
   # for i in range(test_size):
     last_output = run_c_file(c_file_path, parameters=param)
@@ -85,6 +87,8 @@ if __name__ == '__main__':
       continue
 
     res.append(int(last_output.split(' ')[3]))
+
+  elaspedTime = time.time() - startTime
 
   # Create a pandas Series from the fitness list
   res = pd.Series(res)
@@ -108,8 +112,9 @@ if __name__ == '__main__':
 
   with open(file_path,'w') as f:
     f.write(timestamp)
+    f.write(f"\nTime Elasped\t{round(elaspedTime,2)} sec\n")
     # f.write(f"Note\t{note}\n")
-    f.write(f"\nT.Size\t{test_size}\n")
+    f.write(f"T.Size\t{test_size}\n")
     f.write(f"Mean\t{round(res.mean(),4)}\n")
     f.write(f"Median\t{res.median()}\n")
     f.write(f"Mode\t{res.mode().iloc[0]}\n")
