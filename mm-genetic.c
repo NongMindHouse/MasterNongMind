@@ -37,6 +37,29 @@ int CheckDuplicate(int code[], int guesses[MAX_GUESS][CODE_LENGTH + 2], int roun
   return 0;
 }
 
+// Function to check if an individual is duplicated in the population
+int CheckPopulationDuplicate(int population[POPULATION_LENGTH][CODE_LENGTH + 1],
+                             int individual[CODE_LENGTH + 1], int currentSize)
+{
+  for (int i = 0; i < currentSize; i++)
+  {
+    int isSame = 1;
+    for (int j = 0; j < CODE_LENGTH; j++)
+    {
+      if (population[i][j] != individual[j])
+      {
+        isSame = 0;
+        break;
+      }
+    }
+    if (isSame)
+    {
+      return 1; // Duplicate found
+    }
+  }
+  return 0; // No duplicate found
+}
+
 void EvaluateGuess(int guess[], int secret[], int *black, int *white)
 {
   *black = 0;
@@ -77,14 +100,19 @@ void EvaluateGuess(int guess[], int secret[], int *black, int *white)
   }
 }
 
+void GenerateRandomGuess(int guess[CODE_LENGTH])
+{
+  for (int j = 0; j < CODE_LENGTH; j++)
+  {
+    guess[j] = rand() % COLORS;
+  }
+}
+
 void GenerateRandomPopulation(int population[POPULATION_LENGTH][CODE_LENGTH])
 {
   for (int i = 0; i < POPULATION_LENGTH; i++)
   {
-    for (int j = 0; j < CODE_LENGTH; j++)
-    {
-      population[i][j] = rand() % COLORS;
-    }
+    GenerateRandomGuess(population[i]);
     // PrintCode(population[i]);
   }
 }
@@ -106,9 +134,7 @@ void FitnessScore(int test[CODE_LENGTH + 1], int guesses[MAX_GUESS][CODE_LENGTH 
 
 void Crossover(int dad[], int mom[], int child_1[], int child_2[])
 {
-  int crossoverPoint = rand() % CODE_LENGTH;
-  // int crossoverPoint = CODE_LENGTH / 2;
-  // if(crossoverPoint == 0 || crossoverPoint == CODE_LENGTH-1)
+  int crossoverPoint = (rand() % CODE_LENGTH) + 1;
 
   for (int i = 0; i < crossoverPoint; i++)
   {
@@ -153,26 +179,33 @@ int GeneticEvolution(int eligibles[][CODE_LENGTH + 1], int guesses[MAX_GUESS][CO
     int nzero = 0;
     for (int i = 0; i < poplen; i++)
     {
-      if (i == poplen - 1)
-      {
-        for (int j = 0; j < CODE_LENGTH; j++)
-        {
-          children[i][j] = rand() % COLORS;
-        }
-      }
-      else
-      {
-        // Crossover(population[i], population[i + 1], children[i]);
-        Crossover(population[i], population[rand() % poplen], children[i], children[i + 1]);
+      // if (i == poplen - 1)
+      // {
+      //   for (int j = 0; j < CODE_LENGTH; j++)
+      //   {
+      //     children[i][j] = rand() % COLORS;
+      //   }
+      // }
+      // else
+      // {
+      // Crossover(population[i], population[i + 1], children[i]);
+      Crossover(population[i], population[rand() % poplen], children[i], children[i + 1]);
 
-        if (rand() % 100 < 10)
-        {
-          if (rand() % 2 == 0)
-            Mutate(children[i]);
-          else
-            Mutate(children[i + 1]);
-        }
+      if (rand() % 100 < 10)
+      {
+        if (rand() % 2 == 0)
+          Mutate(children[i]);
+        else
+          Mutate(children[i + 1]);
       }
+
+      if (CheckPopulationDuplicate(children, children[i], i) == 1)
+        GenerateRandomGuess(children[i]);
+
+      if (CheckPopulationDuplicate(children, children[i + 1], i) == 1)
+        GenerateRandomGuess(children[i + 1]);
+
+      // }
 
       // FitnessScore(children[i], guesses, round);
       // if (children[i][CODE_LENGTH] == 0)
@@ -221,31 +254,47 @@ int GeneticEvolution(int eligibles[][CODE_LENGTH + 1], int guesses[MAX_GUESS][CO
       {
         eligibles[i][j] = children[i][j];
       }
-      if (e < POPULATION_LENGTH - 1)
-        e++;
-      else
-        break;
+
+      e++;
+      // if (e < POPULATION_LENGTH - 1)
+      //   e++;
+      // else
+      //   break;
     }
 
     // fix something
-
     for (int i = 0; i < poplen; i++)
     {
-      for (int j = 0; j < CODE_LENGTH; j++)
+      int startAlabama = (int)(poplen * 0.95);
+
+      if (i < startAlabama)
       {
-        population[i][j] = children[i][j];
+        // children -> next gen population
+        for (int j = 0; j < CODE_LENGTH; j++)
+        {
+          population[i][j] = children[i][j];
+        }
+      }
+      else
+      {
+        // top 5% of current population -> next gen population
+        for (int j = 0; j < CODE_LENGTH; j++)
+        {
+          population[i][j] = population[i - startAlabama][j];
+        }
       }
     }
+
     // printf("====== NEW POP ======\n");
     // for (int i = 0; i < poplen; i++)
     // {
     //   PrintCode(population[i]);
     // }
 
-    for (int i = 0; i < CODE_LENGTH; i++)
-    {
-      population[poplen - 1][i] = rand() % COLORS;
-    }
+    // for (int i = 0; i < CODE_LENGTH; i++)
+    // {
+    //   population[poplen - 1][i] = rand() % COLORS;
+    // }
 
     h++;
   }
