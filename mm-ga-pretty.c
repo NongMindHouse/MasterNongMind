@@ -2,12 +2,14 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define CODE_LENGTH 5
-#define COLORS 8
+int CODE_LENGTH = 5;
+int COLORS = 8;
 
-#define MAX_GUESS 10
-#define POPULATION_LENGTH 300
-#define MAX_GEN 200
+int MAX_GUESS = 10;
+int POPULATION_LENGTH = 300;
+int MAX_GEN = 200;
+
+float MUTATION_RATE = 0.1;
 
 #define BLACK_WEIGHT 3
 #define WHITE_WEIGHT 2
@@ -17,7 +19,6 @@
 // Just for printing array
 void PrintCode(int arr[])
 {
-  // char fancy[] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'};
   const char emojis[][5] = {"\U0001F534", "\U0001F7E0", "\U0001F7E1", "\U0001F7E2", "\U0001F535", "\U0001F7E3", "\U0001F7E4", "\U000026AB", "\U000026AA"};
 
   for (int i = 0; i < CODE_LENGTH; i++)
@@ -361,8 +362,23 @@ void PrintGuessData(int guess[CODE_LENGTH + 2])
   PrintCode(guess);
 }
 
-int main()
+int main(int argc, char *argv[])
 {
+  // This part use to automate benchmarking
+  if (argc == 7)
+  {
+    CODE_LENGTH = atoi(argv[1]);
+    COLORS = atoi(argv[2]);
+
+    MAX_GUESS = atoi(argv[3]);
+    POPULATION_LENGTH = atoi(argv[4]);
+    MAX_GEN = atoi(argv[5]);
+
+    MUTATION_RATE = atof(argv[6]);
+
+    printf("-- Manual Overwrite Detected --\n");
+  }
+
   // Initiate necessary variable for Mastermind
   int secret_code[CODE_LENGTH];
   int guesses[MAX_GUESS][CODE_LENGTH + 2];
