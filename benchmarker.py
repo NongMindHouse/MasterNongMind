@@ -23,7 +23,7 @@ def run_c_file(file_path, parameters=[]):
         print(f"Error: {e}")
         return None
 
-def benchmarkExceution(src_path, export_dir, params, test_size):
+def benchmarkExceution(src_path, export_dir, params, test_size, progress=True):
     not_win = 0 
     res = []
     # Compile the C file
@@ -32,7 +32,13 @@ def benchmarkExceution(src_path, export_dir, params, test_size):
         raise Exception(f"Compilation failed with return code {compile_process.returncode}")
 
     startTime = time.time()
-    for _ in tqdm(range(test_size)):
+
+    if progress:
+      range_process = tqdm(range(test_size))
+    else:
+       range_process = range(test_size)
+
+    for _ in range_process:
     # for i in range(test_size):
       last_output = run_c_file(src_path, parameters=params)
 
@@ -113,4 +119,4 @@ if __name__ == '__main__':
      '111', # MAX_GEN
      '0.05', # MUTATION_RATE
   ]
-  benchmarkExceution(c_file_path,export_path, params, test_size)
+  benchmarkExceution(c_file_path,export_path, params, test_size,progress)
