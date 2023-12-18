@@ -13,12 +13,12 @@ if __name__ == '__main__':
     print('Using ', c_file_path)
 
     # Loop for Grid Search 
-    total_iterations = 1000
+    total_iterations = 250
     # Create a single progress bar for all three loops
     with tqdm(total=total_iterations, desc="🐥 Overall Status") as pbar_outer:
         for population_length  in range(50,550,50):
-            for max_gen in range(50,550,50):
-                for mutation_rate in np.arange(0.00, 0.55, 0.05):
+            for max_gen in range(100,600,100):
+                for mutation_rate in np.arange(0.00, 0.5, 0.1):
                     params = [
                         color_length,        # CODE_LENGTH Fixed
                         colors_num,        # COLORS Fixed
