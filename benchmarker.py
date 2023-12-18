@@ -7,11 +7,6 @@ import time
 
 def run_c_file(file_path, parameters=[]):
     try:
-        # Compile the C file
-        # compile_process = subprocess.run(["gcc", file_path, "-o", "executable"])
-        # if compile_process.returncode != 0:
-        #     raise Exception(f"Compilation failed with return code {compile_process.returncode}")
-
         # Run the compiled executable
         command = ["./executable"] + parameters + ['0']
         run_process = subprocess.run(command, capture_output=True, text=True)
@@ -28,7 +23,7 @@ def run_c_file(file_path, parameters=[]):
         print(f"Error: {e}")
         return None
 
-def benchmarkExceution(src_path, params, test_size):
+def benchmarkExceution(src_path, export_dir, params, test_size):
     not_win = 0 
     res = []
     # Compile the C file
@@ -74,7 +69,11 @@ def benchmarkExceution(src_path, params, test_size):
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
 
     filename = f"{params[0]}{params[1]}-MGU{params[2]}-POP{params[3]}-MGEN{params[4]}-MUT{round(float(params[5])*100)}.txt"
-    file_path = os.path.join("Benchmarks", filename)
+    
+    if not os.path.exists(export_dir):
+       os.makedirs(export_dir)
+       
+    file_path = os.path.join(f"{export_dir}", filename)
 
     with open(file_path,'w') as f:
       f.write(timestamp)
@@ -101,17 +100,17 @@ def benchmarkExceution(src_path, params, test_size):
         f.write(str(r) + ',')
 
 
-
 if __name__ == '__main__':
   c_file_path = "mm-ga-pretty.c"
+  export_path = "Benchmarks"
   print('Using ', c_file_path)
-  test_size = 1000
+  test_size = 1000 
   params = [
      '4', # CODE_LENGTH
      '6', # COLORS
      '10', # MAX_GUESS
-     '111', # POPULATION_LENGTH
+     '222', # POPULATION_LENGTH
      '111', # MAX_GEN
      '0.05', # MUTATION_RATE
   ]
-  benchmarkExceution(c_file_path, params, test_size)
+  benchmarkExceution(c_file_path,export_path, params, test_size)
