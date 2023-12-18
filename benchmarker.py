@@ -115,8 +115,8 @@ if __name__ == '__main__':
      '4', # CODE_LENGTH
      '6', # COLORS
      '10', # MAX_GUESS
-     '222', # POPULATION_LENGTH
-     '111', # MAX_GEN
-     '0.05', # MUTATION_RATE
+     '500', # POPULATION_LENGTH
+     '500', # MAX_GEN
+     '0.50', # MUTATION_RATE
   ]
-  benchmarkExceution(c_file_path,export_path, params, test_size,progress)
+  benchmarkExceution(c_file_path,export_path, params, test_size)
