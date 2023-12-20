@@ -9,16 +9,20 @@ import random
 def run_c_file(file_path, parameters=[]):
     try:
         # Run the compiled executable
-        command = ["./executable"] + [str(random.randint(0,1e4))] + parameters + ['0']
+        command = ["./executable"] + [str(random.randint(0,1e4))] + parameters + ['1']
         run_process = subprocess.run(command, capture_output=True, text=True)
         if run_process.returncode != 0:
             raise Exception(f"Execution failed with return code {run_process.returncode}\n{run_process.stderr}")
 
         # Capture and return the last output
         output_lines = run_process.stdout.strip().split('\n')
+        for output in output_lines: 
+          print(output)
 
-        # for output in output_lines:
-        #   print(output)
+        # time.sleep(1)
+        # time.sleep(random.uniform(0.5,1))
+        # print(random.random())
+        print("--------------------------------------------\n")
 
         last_output = output_lines[-1] if output_lines else None
 
@@ -39,7 +43,8 @@ def benchmarkExceution(src_path, export_dir, params, test_size, progress=True):
     startTime = time.time()
 
     if progress:
-      range_process = tqdm(range(test_size))
+      # range_process = tqdm(range(test_size))
+      range_process = range(test_size)
     else:
        range_process = range(test_size)
 
@@ -115,13 +120,42 @@ if __name__ == '__main__':
   c_file_path = "mm-ga-pretty.c"
   export_path = "Benchmarks"
   print('Using ', c_file_path)
-  test_size = 1000
+  test_size = 3
+
+  # params = [
+  #    '4', # CODE_LENGTH
+  #    '6', # COLORS
+  #    '10', # MAX_GUESS
+  #    '400', # POPULATION_LENGTH
+  #    '500', # MAX_GEN
+  #    '0.2' # MUTATION_RATE
+  # ]
+
   params = [
-     '4', # CODE_LENGTH
-     '6', # COLORS
+     '5', # CODE_LENGTH
+     '8', # COLORS
      '10', # MAX_GUESS
-     '500', # POPULATION_LENGTH
-     '400', # MAX_GEN
-     '0.2', # MUTATION_RATE
+     '450', # POPULATION_LENGTH
+     '200', # MAX_GEN
+     '0.4' # MUTATION_RATE
   ]
+
+  # params = [
+  #    '4', # CODE_LENGTH
+  #    '6', # COLORS
+  #    '10', # MAX_GUESS
+  #    '100', # POPULATION_LENGTH
+  #    '100', # MAX_GEN
+  #    '0.3' # MUTATION_RATE
+  # ]
+
+  # params = [
+  #    '5', # CODE_LENGTH
+  #    '8', # COLORS
+  #    '100', # MAX_GUESS
+  #    '50', # POPULATION_LENGTH
+  #    '200', # MAX_GEN
+  #    '0.1' # MUTATION_RATE
+  # ]
+
   benchmarkExceution(c_file_path,export_path, params, test_size)
