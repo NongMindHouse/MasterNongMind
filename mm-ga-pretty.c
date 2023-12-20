@@ -364,22 +364,33 @@ void PrintGuessData(int guess[CODE_LENGTH + 2])
 
 int main(int argc, char *argv[])
 {
+  int SEED;
   // This part use to automate benchmarking
-  if (argc == 8)
+  if (argc == 9)
   {
-    CODE_LENGTH = atoi(argv[1]);
-    COLORS = atoi(argv[2]);
+    SEED = atoi(argv[1]);
 
-    MAX_GUESS = atoi(argv[3]);
-    POPULATION_LENGTH = atoi(argv[4]);
-    MAX_GEN = atoi(argv[5]);
+    CODE_LENGTH = atoi(argv[2]);
+    COLORS = atoi(argv[3]);
+    // COLORS = CODE_LENGTH == 4 ? 6 : 8;
 
-    MUTATION_RATE = atof(argv[6]);
+    MAX_GUESS = atoi(argv[4]);
+    POPULATION_LENGTH = atoi(argv[5]);
+    MAX_GEN = atoi(argv[6]);
 
-    FANCY_MODE = atof(argv[7]);
+    MUTATION_RATE = atof(argv[7]);
+
+    FANCY_MODE = atof(argv[8]);
 
     printf("-- Manual Overwrite Detected --\n");
   }
+
+  printf("SEEDS\t%d\n", SEED);
+  printf("CODE_LENGTH\t%d\n", CODE_LENGTH);
+  printf("COLORS\t%d\n", COLORS);
+  printf("POPSIZE\t%d\n", POPULATION_LENGTH);
+  printf("MAX_GEN\t%d\n", MAX_GEN);
+  printf("MUTATION_RATE\t%.2f\n\n", MUTATION_RATE);
 
   // Initiate necessary variable for Mastermind
   int secret_code[CODE_LENGTH];
@@ -395,7 +406,7 @@ int main(int argc, char *argv[])
     }
   }
 
-  srand(time(NULL));
+  srand(SEED);
 
   // Generate secret code by random
   for (int i = 0; i < CODE_LENGTH; i++)
