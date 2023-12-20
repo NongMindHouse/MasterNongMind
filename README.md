@@ -1,4 +1,4 @@
-# 🔮 MasterNongMind
+# 🔮 Fine Tuning Parameters Genetic Algorithm for solving Mastermind (MasterNongMind)
 > 👀 Creating a Mastermind puzzle guessing algorithm using permutations and handcrafted rule-based solutions.
 
 ### ℹ️ About this Project
